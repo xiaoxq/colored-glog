@@ -1,4 +1,5 @@
-"""A simple Google-style logging wrapper."""
+#!/usr/bin/env python
+"""A colored Google-style logging wrapper."""
 
 import logging
 import time
@@ -6,6 +7,7 @@ import traceback
 import os
 
 import gflags as flags
+import termcolor
 
 FLAGS = flags.FLAGS
 
@@ -27,14 +29,25 @@ class GlogFormatter(logging.Formatter):
         logging.DEBUG: 'D'
     }
 
+    LEVEL_COLOR = {
+        logging.FATAL: lambda msg: termcolor.colored(msg, 'green', 'on_red'),
+        logging.ERROR: lambda msg: termcolor.colored(msg, 'red'),
+        logging.WARN: lambda msg: termcolor.colored(msg, 'yellow'),
+        logging.INFO: lambda msg: termcolor.colored(msg, 'blue'),
+        logging.DEBUG: lambda msg: termcolor.colored(msg, 'grey'),
+    }
+
     def __init__(self):
         logging.Formatter.__init__(self)
 
     def format(self, record):
         try:
             level = GlogFormatter.LEVEL_MAP[record.levelno]
+            color_func = GlogFormatter.LEVEL_COLOR[record.levelno]
         except KeyError:
             level = '?'
+            color_func = lambda msg: msg
+
         date = time.localtime(record.created)
         date_usec = (record.created - int(record.created)) * 1e6
         record_message = '%c%02d%02d %02d:%02d:%02d.%06d %s %s:%d] %s' % (
@@ -43,7 +56,7 @@ class GlogFormatter(logging.Formatter):
             record.process if record.process is not None else '?????',
             record.filename,
             record.lineno,
-            format_message(record))
+            color_func(format_message(record)))
         record.getMessage = lambda: record_message
         return logging.Formatter.format(self, record)
 

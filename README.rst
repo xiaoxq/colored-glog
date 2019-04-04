@@ -1,3 +1,23 @@
+Colored Glog for Python
+===============
+
+Credit to the upstream [glog for Python](git@github.com:benley/python-glog.git)
+
+Usage
+-----
+
+Simply change `import glog` to `import colored_glog as glog`, and all usages
+should be the same with upstream `glog`:
+
+```python
+glog.info("It works.")
+glog.warn("Something not ideal")
+glog.error("Something went wrong")
+glog.fatal("AAAAAAAAAAAAAAA!")
+
+glog.check(False)
+```
+
 glog for Python
 ===============
 
