@@ -6,7 +6,7 @@ Credit to the upstream **glog for Python**.
 Usage
 -----
 
-Simply change *import glog* to *import colored_glog as glog*, and all usages
+Simply change **import glog** to **import colored_glog as glog**, and all usages
 should be the same with upstream `glog`:
 
 glog for Python
