@@ -3,7 +3,7 @@
 import os
 import setuptools
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     description='Colored Google-style logging wrapper for Python.',
     long_description=README,
-    py_modules=['glog'],
+    py_modules=['colored_glog'],
     license='BSD',
     test_suite='tests',
     version=VERSION,
