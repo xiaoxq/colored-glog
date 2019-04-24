@@ -6,10 +6,7 @@ import time
 import traceback
 import os
 
-import gflags as flags
 import termcolor
-
-FLAGS = flags.FLAGS
 
 
 def format_message(record):
@@ -68,9 +65,8 @@ def setLevel(newlevel):
     logger.setLevel(newlevel)
     logger.debug('Log level set to %s', newlevel)
 
+setLevel(logging.INFO)
 
-def init():
-    setLevel(FLAGS.verbosity)
 
 debug = logging.debug
 info = logging.info
@@ -113,42 +109,6 @@ GLOG_PREFIX_REGEX = (
 
 handler.setFormatter(GlogFormatter())
 logger.addHandler(handler)
-
-
-class CaptureWarningsFlag(flags.BooleanFlag):
-    def __init__(self):
-        flags.BooleanFlag.__init__(self, 'glog_capture_warnings', True,
-                                   "Redirect warnings to log.warn messages")
-
-    def Parse(self, arg):
-        flags.BooleanFlag.Parse(self, arg)
-        logging.captureWarnings(self.value)
-
-flags.DEFINE_flag(CaptureWarningsFlag())
-
-
-class VerbosityParser(flags.ArgumentParser):
-    """Sneakily use gflags parsing to get a simple callback."""
-
-    def Parse(self, arg):
-        try:
-            intarg = int(arg)
-            # Look up the name for this level (DEBUG, INFO, etc) if it exists
-            try:
-                level = logging._levelNames.get(intarg, intarg)
-            except AttributeError:   # This was renamed somewhere b/w 2.7 and 3.4
-                level = logging._levelToName.get(intarg, intarg)
-        except ValueError:
-            level = arg
-        setLevel(level)
-        return level
-
-flags.DEFINE(
-    parser=VerbosityParser(),
-    serializer=flags.ArgumentSerializer(),
-    name='verbosity',
-    default=logging.INFO,
-    help='Logging verbosity')
 
 
 # Define functions emulating C++ glog check-macros

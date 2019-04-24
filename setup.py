@@ -3,7 +3,7 @@
 import os
 import setuptools
 
-VERSION = '1.1.0'
+VERSION = '1.3.0'
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -13,9 +13,6 @@ setuptools.setup(
     author_email='xiaoxiangquan@gmail.com',
     url='https://github.com/xiaoxq/colored-glog',
     install_requires=[
-        'python-gflags>=3.1',
-        'six',  # glog doesn't need six, but gflags 3.1 does and its distutils
-                # "requires" line apparently accomplishes nothing, so ...
         'termcolor',
     ],
     description='Colored Google-style logging wrapper for Python.',
